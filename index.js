@@ -11,11 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  express.urlencoded({
-    extended: true,
-  }),
-);
+
 
 conntecMongodb();
 app.get("/api/health", (req, res, next) => {

@@ -12,7 +12,7 @@ export const errorHandler = (err, req, res, next) => {
       message: "Something undefined was used in the code",
     });
   }
-  if (err?.errorResponse?.code == 11000) {
+  if (err?.errorResponse?.code == 11000||err?.code==11000) {
       const field = Object.keys(err.keyPattern)[0];
     const fieldValue = Object.keys(err.keyValue)[0];
     const value = err.keyValue[field];

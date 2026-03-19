@@ -15,13 +15,13 @@ export const hashPassword = (password) => {
 
 export const comparePassword = (password, userPassword) => {
   try {
-    console.log(password, userPassword);
     const isPasswordMatched = bcrypt.compareSync(password, userPassword);
     if (isPasswordMatched) {
       return true;
     }
-    return fals;
+    return false;
   } catch (error) {
+    console.log(error);
     throw new AppError(error.message, 500, error);
   }
 };

@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema(
     address: {
       type: String,
     },
+    role: {
+  type: String,
+  enum: ["customer", "admin", "professional"],
+  default: "customer",
+},
     profilePicture: {
       type: String,
     },
