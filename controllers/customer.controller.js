@@ -4,19 +4,21 @@ import { asyncHandler } from "../utils/asyncHandller.js";
 
 export const getAllServices = asyncHandler(async (req, res) => {
   const services = await Service.find({})
-    .select("experience pricing availabilityStatus status availability professional serviceName title")
-   .populate({
-  path: "professional",
-  select: "categoryName user",
-  populate: {
-    path: "user",
-    select: "name email",
-  },
-})
+    .select(
+      "experience pricing availabilityStatus status availability professional serviceName title",
+    )
+    .populate({
+      path: "professional",
+      select: "categoryName user",
+      populate: {
+        path: "user",
+        select: "name email",
+      },
+    })
     .populate({
       path: "availability",
     });
-console.log(services)
+  console.log(services);
   return res.status(200).json({
     success: true,
     services,
@@ -42,7 +44,8 @@ export const getAllProfessionals = asyncHandler(async (req, res) => {
     })
     .populate({
       path: "services",
-      select: "experience pricing availability availabilityStatus serviceName title",
+      select:
+        "experience pricing availability availabilityStatus serviceName title",
       populate: {
         path: "availability",
         select: "startTime endTime status", // ✅ availability fields
@@ -54,5 +57,13 @@ export const getAllProfessionals = asyncHandler(async (req, res) => {
     success: true,
     count: professionals.length,
     data: professionals,
+  });
+});
+
+export const availableServicesCategories = asyncHandler(async (req, res) => {
+  const professional = await Professional.find({}).select("categoryName").lean();
+
+  return res.json({
+    services: professional,
   });
 });

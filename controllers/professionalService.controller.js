@@ -68,40 +68,51 @@ export const createProfessionalProfile = asyncHandler(async (req, res) => {
   });
 });
 
-// Get professional profile with services
 export const getProfessionalProfile = asyncHandler(async (req, res) => {
   // ✅ Step 1: Get Professional
-  console.log("object");
   const professional = await Professional.findOne({
     user: req.user._id,
-  }).populate("user", "name email phone");
-  console.log(professional);
+  })
+    .populate("user", "name email phone")
+    .lean();
+
   if (!professional) {
     throw new AppError(404, "Professional not found");
   }
 
-  // ✅ Step 2: Get Services
+  // ✅ Step 2: Get Services (FIXED ❗)
   const services = await Service.find({
-    professional: req.user._id,
+    professional: professional._id, // ✅ correct relation
   })
     .populate("availability")
     .lean();
 
-  // ✅ Step 3: Get Bookings safely
+  // ✅ Step 3: Get Bookings
   const serviceIds = services.map((s) => s._id);
 
-  const bookings = serviceIds.length
-    ? await Booking.find({ service: { $in: serviceIds } })
-        .populate("user", "name email")
-        .populate("service", "pricing")
-        .lean()
-    : [];
-  professional.user.password = null;
-  // ✅ Step 4: Response
+  let bookings = [];
+  if (serviceIds.length > 0) {
+    bookings = await Booking.find({
+      service: { $in: serviceIds },
+    })
+      .populate("user", "name email")
+      .populate("service", "serviceName pricing")
+      .lean();
+  }
+
+  // ✅ Step 4: Remove sensitive data safely
+  if (professional.user) {
+    delete professional.user.password;
+  }
+
+  // ✅ Step 5: Response
   return res.status(200).json({
+    success: true,
     professional,
     services,
     bookings,
+    totalServices: services.length,
+    totalBookings: bookings.length,
     message: "Professional profile fetched successfully",
   });
 });
