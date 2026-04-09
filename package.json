@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/hindtechpc-cloud/local_service_server#readme",
   "dependencies": {
+    "@emailjs/nodejs": "^5.0.2",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",

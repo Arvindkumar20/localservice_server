@@ -1,18 +1,21 @@
 import { validationResult } from "express-validator";
-// import AppError from "../utils/appError.js";
 
 const validate = (req, res, next) => {
-  console.log(req.body)
+
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     const formattedErrors = errors.array().map((err) => ({
       field: err.path,
       message: err.msg,
     }));
-    console.log(formattedErrors);
-
-    next(formattedErrors);
+    // console.log(formattedErrors);
+    
+    // Pass error to error handler and STOP execution
+    return next(new Error(JSON.stringify(formattedErrors)));
   }
+  
+  // Only call next() if no errors
   next();
 };
 

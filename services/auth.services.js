@@ -11,7 +11,7 @@ export const createAccountService = asyncHandler(async (req, res, next) => {
   const existingUser = await User.findOne({ email: req.body.email });
 
   if (existingUser) {
-    return next(new AppError("User already exists with this email", 400));
+    return next(new AppError(400, "User already exists with this email"));
   }
 
   // Fix: await the hashPassword function
@@ -29,13 +29,13 @@ export const createAccountService = asyncHandler(async (req, res, next) => {
 
   console.log("user : ", user);
   if (!user) {
-    return next(new AppError("user not created", 400));
+    return next(new AppError(400, "user not created"));
   }
 
   const token = generateToken(user);
   console.log("token : ", token);
   if (!token) {
-    return next(new AppError("token not generated", 500));
+    return next(new AppError(400, "token not generated"));
   }
 
   user.password = undefined;
@@ -54,25 +54,20 @@ export const loginService = asyncHandler(async (req, res, next) => {
   // find user with email
   const user = await User.findOne({ email: email });
   if (!user) {
-    throw new AppError("user not exist with this email ", 404);
+    throw new AppError(404, "user not exist with this email ");
   }
-  console.log(user.password);
+
   // comparePassword password
   // const isMatchedPassword = true;
   const isMatchedPassword = comparePassword(password, user.password);
-  console.log(isMatchedPassword);
   if (!isMatchedPassword) {
-    throw new AppError("incorrect password", 400);
+    throw new AppError(400, "incorrect password");
   }
   // genearet token
   const token = generateToken(user);
   if (!token) {
-    throw new AppError("token not not genaretd ", 500);
+    throw new AppError(500, "token not not genaretd ");
   }
   user.password = undefined;
-
   successResponse(200, "loggedin successfully", { user, token }, res, req);
 });
-export const createAccountServicePro = asyncHandler(
-  async (req, res, next) => {},
-);

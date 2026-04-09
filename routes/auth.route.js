@@ -1,12 +1,17 @@
 import express from "express";
 import { upload } from "../middlewares/upload.js";
-import { createAccount, login,createProfessionalWithService } from "../controllers/auth.controller.js";
+import {
+  createAccount,
+  login,
+  
+} from "../controllers/auth.controller.js";
 import {
   loginValidation,
   registerValidations,
 } from "../validations/authvalidations.js";
 import validate from "../middlewares/validate.js";
-
+import { validateCreateProfessionalProfile } from "../validations/professionalService.validator.js";
+import { createProfessionalProfile } from "../controllers/professionalService.controller.js";
 
 const router = express.Router();
 
@@ -20,9 +25,9 @@ router.post(
 router.post(
   "/register-profetionals",
 
-  registerValidations,
+  validateCreateProfessionalProfile,
   validate,
-  createProfessionalWithService,
+  createProfessionalProfile,
 );
 
 router.post("/login", loginValidation, validate, login);

@@ -1,6 +1,6 @@
 export const errorHandler = (err, req, res, next) => {
   // console.error(err);
-
+console.log(err)
   // Default values
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
@@ -10,6 +10,7 @@ export const errorHandler = (err, req, res, next) => {
     return res.status(500).json({
       success: false,
       message: "Something undefined was used in the code",
+      name:"ReferenceError"
     });
   }
   if (err?.errorResponse?.code == 11000||err?.code==11000) {
