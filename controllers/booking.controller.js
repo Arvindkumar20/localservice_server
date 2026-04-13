@@ -323,7 +323,8 @@ export const getUserBookings = asyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
 
   const bookings = await Booking.find(query)
-    .populate("service", "serviceName title price duration image")
+    .populate("service", "serviceName title price duration")
+    .populate("user", "name email phone")
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(parseInt(limit));
@@ -535,7 +536,7 @@ export const getAllBookings = asyncHandler(async (req, res) => {
 export async function updateBookingStatus(req, res) {
   const { status } = req.body;
   const { id: bookingId } = req.params;
-  console.log(console.log(object));
+  
   try {
     // Fix: Correct populate syntax - remove quotes and use array or object
     const booking = await Booking.findByIdAndUpdate(

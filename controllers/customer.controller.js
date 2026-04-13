@@ -12,7 +12,7 @@ export const getAllServices = asyncHandler(async (req, res) => {
       select: "categoryName user",
       populate: {
         path: "user",
-        select: "name email",
+        select: "name email phone -password",
       },
     })
     .populate({
@@ -40,7 +40,7 @@ export const getAllProfessionals = asyncHandler(async (req, res) => {
   const professionals = await Professional.find({})
     .populate({
       path: "user",
-      select: "name email",
+      select: "name email phone",
     })
     .populate({
       path: "services",
@@ -48,7 +48,7 @@ export const getAllProfessionals = asyncHandler(async (req, res) => {
         "experience pricing availability availabilityStatus serviceName title",
       populate: {
         path: "availability",
-        select: "startTime endTime status", // ✅ availability fields
+        select: "startTime endTime status",
       },
     })
     .sort({ createdAt: -1 });
@@ -61,7 +61,9 @@ export const getAllProfessionals = asyncHandler(async (req, res) => {
 });
 
 export const availableServicesCategories = asyncHandler(async (req, res) => {
-  const professional = await Professional.find({}).select("categoryName").lean();
+  const professional = await Professional.find({})
+    .select("categoryName")
+    .lean();
 
   return res.json({
     services: professional,

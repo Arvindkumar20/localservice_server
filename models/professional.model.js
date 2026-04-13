@@ -12,19 +12,19 @@ const professionalSchema = new mongoose.Schema(
       required: true,
     },
     // Add to professional.model.js
-withdrawalDetails: {
-  bankAccount: {
-    accountNumber: String,
-    ifscCode: String,
-    accountHolderName: String
-  },
-  upiId: String,
-  preferredMethod: {
-    type: String,
-    enum: ["bank", "upi"],
-    default: "bank"
-  }
-},
+    withdrawalDetails: {
+      bankAccount: {
+        accountNumber: String,
+        ifscCode: String,
+        accountHolderName: String,
+      },
+      upiId: String,
+      preferredMethod: {
+        type: String,
+        enum: ["bank", "upi"],
+        default: "bank",
+      },
+    },
     pricing: {
       type: Number,
       required: true,
@@ -39,11 +39,16 @@ withdrawalDetails: {
         ref: "Service",
       },
     ],
+    status: {
+      type: String,
+      enum: ["available", "unAvailable"],
+      default: "available",
+    },
   },
   { timestamps: true },
 );
 
 professionalSchema.pre(/^find/, function (next) {
-  this.populate("user", "name email");
+  this.populate("user", "name email phone");
 });
 export const Professional = mongoose.model("Professional", professionalSchema);

@@ -15,8 +15,8 @@ import { dashboardRouter } from "./routes/dashboard.routes.js";
 import { earningRouter } from "./routes/earnings.routes.js";
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://yourdomain.com",
-  "https://admin.yourdomain.com",
+  "https://ornate-naiad-e13c6b.netlify.app",
+  "https://ornate-naiad-e13c6b.netlify.app",
   "*",
 ];
 app.use(cors());

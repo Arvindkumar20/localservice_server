@@ -465,6 +465,18 @@ export const getAllProfessionalsServiceById = asyncHandler(async (req, res) => {
   });
 });
 
+export const professionalAvailability = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+
+  const response = await User.findOneAndUpdate(
+    { userId: req.user._id },
+    { status: status },
+  );
+  return res.json({
+    message:"success",
+  })
+});
+
 // export const updateBookingStatus = asyncHandler(async (req, res) => {
 //   const { bookingId } = req.params;
 //   const { status } = req.body;

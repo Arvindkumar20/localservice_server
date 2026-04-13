@@ -17,6 +17,7 @@ import {
   getAvailabilities,
   getProfessionalProfile,
   getServices,
+  professionalAvailability,
   updateAvailabilityStatus,
   updateProfessionalProfile,
   updateService,
@@ -62,6 +63,7 @@ router.post(
 
 router.get("/services/:serviceId/availability", getAvailabilities);
 router.patch("/availability/:availabilityId", updateAvailabilityStatus);
+router.patch("/availability", professionalAvailability);
 router.delete("/availability/:availabilityId", deleteAvailability);
 
 export const serviceRouter= router;

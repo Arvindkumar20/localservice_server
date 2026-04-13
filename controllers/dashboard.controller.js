@@ -39,7 +39,7 @@ export const getDashboardStats = async (req, res) => {
       Booking.aggregate([
         {
           $match: {
-            paymentStatus: "paid",
+            status: "confirmed",
             bookingDate: { $gte: startDate, $lte: endDate }
           }
         },
@@ -79,7 +79,7 @@ export const getDashboardStats = async (req, res) => {
       Booking.aggregate([
         {
           $match: {
-            paymentStatus: "paid",
+            status: "confirmed",
             bookingDate: { $gte: startDate, $lte: endDate }
           }
         },
@@ -103,7 +103,7 @@ export const getDashboardStats = async (req, res) => {
     const previousRevenue = await Booking.aggregate([
       {
         $match: {
-          paymentStatus: "paid",
+          status: "confirmed",
           bookingDate: { $gte: previousPeriodStart, $lt: startDate }
         }
       },
@@ -345,7 +345,7 @@ export const getRevenueChart = async (req, res) => {
     
     if (period === "week") {
       startDate.setDate(endDate.getDate() - 7);
-      groupFormat = "%a"; // Mon, Tue, etc.
+      // Mon, Tue, etc.
     } else if (period === "month") {
       startDate.setDate(endDate.getDate() - 30);
       groupFormat = "%d %b";
@@ -357,7 +357,7 @@ export const getRevenueChart = async (req, res) => {
     const revenueData = await Booking.aggregate([
       {
         $match: {
-          paymentStatus: "paid",
+          status: "confirmed",
           bookingDate: { $gte: startDate, $lte: endDate }
         }
       },
