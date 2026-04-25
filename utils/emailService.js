@@ -182,6 +182,7 @@ export const sendWelcomeEmail = async (userData) => {
   });
 };
 
+
 // Professional Notification for New Booking
 export const sendProfessionalNotificationEmail = async (bookingData) => {
   const {
